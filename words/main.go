@@ -7,12 +7,13 @@ import (
 	"io/ioutil"
 	"os"
 	"bytes"
+	"flag"
 )
 
-func words(file io.Reader) (even []string, odd []string) {
+func words(textFile io.Reader) (even []string, odd []string) {
 
 	 buffer := new(bytes.Buffer) // from bytes to string
-	 buffer.ReadFrom(file)
+	 buffer.ReadFrom(textFile)
      str := buffer.String()
 	
 	replacer := strings.NewReplacer(".", "", ",", "")
@@ -76,12 +77,15 @@ func main() {
 	// Can't. And lights in unto you evening, stars.
 	// `)
 	
-	text, err := ioutil.ReadFile("lorem.txt") // load file
+	file := flag.String("file", "lorem.txt", "lorem ipsum")
+    flag.Parse()
+
+	text, err := ioutil.ReadFile(*file) // load file
     if err != nil {
         fmt.Print(err)
     }
     str := string(text) // from bytes to string
-    file := strings.NewReader(str)
+    textFile := strings.NewReader(str)
 
-	fmt.Println(words(file))
+	fmt.Println(words(textFile))
 }
